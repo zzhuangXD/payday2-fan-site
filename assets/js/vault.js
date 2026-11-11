@@ -82,7 +82,7 @@ const billTex = canvasTex(256, 110, (c, w, h) => {
   c.font = 'bold 30px Arial'; c.fillStyle = '#2f4a2b'; c.fillText('100', 16, 42); c.fillText('100', w - 70, h - 18);
 });
 const stackTex = canvasTex(256, 128, (c, w, h) => {
-  c.fillStyle = '#b9c4ad'; c.fillRect(0, 0, w, h);
+  c.fillStyle = '#7f8c76'; c.fillRect(0, 0, w, h);
   for (let y = 0; y < h; y += 3) { c.fillStyle = y % 6 ? 'rgba(60,80,55,.25)' : 'rgba(255,255,255,.15)'; c.fillRect(0, y, w, 1); }
   c.fillStyle = '#d8b25a'; c.fillRect(w * 0.42, 0, w * 0.16, h);
 });
@@ -95,7 +95,7 @@ const M = {
   darkSteel: new THREE.MeshStandardMaterial({ color: 0x2a2f35, roughness: 0.5, metalness: 0.85 }),
   brass: new THREE.MeshStandardMaterial({ color: 0xc9a24a, roughness: 0.3, metalness: 1 }),
   gold: new THREE.MeshStandardMaterial({ color: 0xffc94a, roughness: 0.22, metalness: 1, emissive: 0x2a1a00, emissiveIntensity: 0.4 }),
-  cash: new THREE.MeshStandardMaterial({ map: stackTex, roughness: 0.8 }),
+  cash: new THREE.MeshStandardMaterial({ map: stackTex, color: 0xb8c2ad, roughness: 0.85 }),
   bill: new THREE.MeshStandardMaterial({ map: billTex, roughness: 0.9, side: THREE.DoubleSide }),
   wood: new THREE.MeshStandardMaterial({ color: 0x3b2a1e, roughness: 0.75 }),
   glass: new THREE.MeshStandardMaterial({ color: 0xbfe6ff, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.18, depthWrite: false }),
@@ -234,7 +234,7 @@ function lamp(x, z, color = 0xfff1d6) {
   hittable(shade, 'lamp', { lamp: L }); hittable(bulb, 'lamp', { lamp: L });
   lamps.push(L); return L;
 }
-const mainLamp = lamp(0, -1.2); mainLamp.light.castShadow = true; mainLamp.light.shadow.mapSize.set(1024, 1024); mainLamp.light.shadow.bias = -0.0008;
+const mainLamp = lamp(0, -1.2); mainLamp.base = 18; mainLamp.light.intensity = 18; mainLamp.light.castShadow = true; mainLamp.light.shadow.mapSize.set(1024, 1024); mainLamp.light.shadow.bias = -0.0008;
 lamp(-2.6, 0); lamp(2.4, 1.6, 0xd6ecff); lamp(0, 3.6, 0xd6ecff);
 scene.add(new THREE.HemisphereLight(0x4a6a8a, 0x0b0b0b, 0.35));
 
@@ -265,7 +265,7 @@ const sirens = [];
 const gun = new THREE.Group();
 const gunMat = new THREE.MeshStandardMaterial({ color: 0x1a1c1f, roughness: 0.42, metalness: 0.75 });
 const slide = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.055, 0.3), gunMat); slide.position.set(0, 0.03, -0.12); gun.add(slide);
-const frame = new THREE.Mesh(new THREE.BoxGeometry(0.046, 0.035, 0.25), gunMat); frame.position.set(0, -0.012, -0.1); gun.add(frame);
+const gunFrame = new THREE.Mesh(new THREE.BoxGeometry(0.046, 0.035, 0.25), gunMat); gunFrame.position.set(0, -0.012, -0.1); gun.add(gunFrame);
 const grip = new THREE.Mesh(new THREE.BoxGeometry(0.044, 0.14, 0.06), new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 }));
 grip.position.set(0, -0.08, 0.0); grip.rotation.x = 0.28; gun.add(grip);
 const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.04, 10), M.black); barrel.rotation.x = Math.PI / 2; barrel.position.set(0, 0.03, -0.29); gun.add(barrel);
@@ -285,7 +285,7 @@ camera.add(gun);
 /* ---------- 后期：Bloom ---------- */
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-const bloom = new UnrealBloomPass(new THREE.Vector2(512, 512), 0.75, 0.55, 0.82);
+const bloom = new UnrealBloomPass(new THREE.Vector2(512, 512), 0.6, 0.5, 0.92);
 composer.addPass(bloom);
 composer.addPass(new OutputPass());
 
