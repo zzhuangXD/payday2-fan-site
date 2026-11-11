@@ -256,6 +256,43 @@
   .bgm .src a{color:var(--dim)}
   .bgm .err{margin-top:6px;font:500 12px/1.4 var(--body);color:var(--risk)}
 
+
+  /* ---------- THE VAULT（three.js 3D 场景） ---------- */
+  .vault{border-bottom:1px solid var(--line);padding:110px 0 0}
+  .vault .head{max-width:var(--wrap);margin:0 auto;padding:0 32px 36px}
+  #vault-stage{position:relative;height:min(80vh,760px);min-height:460px;background:#05070a;overflow:hidden;cursor:crosshair;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  #vault-stage canvas{display:block;width:100%;height:100%}
+  #vault-stage.aiming{cursor:none}
+  #v-cross{position:absolute;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;pointer-events:none;opacity:0;transition:opacity .15s}
+  #vault-stage.aiming #v-cross{opacity:1}
+  #v-cross::before,#v-cross::after{content:"";position:absolute;background:var(--text);box-shadow:0 0 4px rgba(0,0,0,.9)}
+  #v-cross::before{left:16px;top:0;width:2px;height:34px;clip-path:polygon(0 0,100% 0,100% 35%,0 35%,0 65%,100% 65%,100% 100%,0 100%)}
+  #v-cross::after{top:16px;left:0;height:2px;width:34px;clip-path:polygon(0 0,35% 0,35% 100%,0 100%,0 0,65% 0,100% 0,100% 100%,65% 100%,65% 0)}
+  .v-loading{position:absolute;inset:0;display:grid;place-items:center;font:600 15px/1 var(--ui);letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+  #vault-stage.ready .v-loading{display:none}
+  #vault-stage.nogl .v-loading{display:none}
+  .v-hud{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:18px 22px;pointer-events:none;background:linear-gradient(transparent,rgba(0,0,0,.7))}
+  .v-hud .box{font:600 13px/1 var(--ui);letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+  .v-hud .box b{display:block;margin-top:8px;font:700 34px/1 var(--ui);letter-spacing:.04em;color:var(--text)}
+  .v-hud .cash b{color:var(--cash)}
+  .v-hud .right{display:flex;align-items:flex-end;gap:14px;text-align:right}
+  .v-ui{pointer-events:auto}
+  #v-reload{font:600 14px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;background:rgba(0,0,0,.6);border:1px solid var(--line-2);color:var(--text);padding:10px 14px;cursor:pointer}
+  #v-reload:hover{border-color:var(--blue);color:var(--blue)}
+  #v-hint{position:absolute;left:22px;top:18px;font:600 14px/1.4 var(--ui);letter-spacing:.14em;color:#cfd6dc;background:rgba(0,0,0,.55);padding:8px 12px;border-left:2px solid var(--accent);pointer-events:none;max-width:calc(100% - 44px)}
+  #v-status{position:absolute;left:50%;top:22%;transform:translateX(-50%);font:700 22px/1.2 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--risk);text-shadow:0 2px 12px rgba(0,0,0,.9);pointer-events:none;opacity:0;white-space:nowrap}
+  #v-status.pop{animation:vpop 1.6s ease-out}
+  @keyframes vpop{0%{opacity:0;transform:translate(-50%,8px)}12%{opacity:1;transform:translate(-50%,0)}75%{opacity:1}100%{opacity:0}}
+  .v-credit{max-width:var(--wrap);margin:0 auto;padding:14px 32px 0;color:var(--dim);font-size:13px}
+  @media (max-width:760px){
+    .vault{padding-top:76px}
+    .vault .head{padding:0 18px 28px}
+    #vault-stage{height:72vh;min-height:420px}
+    .v-hud{padding:12px 14px}.v-hud .box b{font-size:26px}
+    #v-hint{left:14px;top:12px;font-size:13px}
+    #v-status{font-size:17px;white-space:normal;text-align:center;width:86%}
+  }
+
   /* ---------- 响应式 ---------- */
   @media (max-width:980px){
     .net{grid-template-columns:1fr}
@@ -300,6 +337,7 @@
     html{scroll-behavior:auto}
   }
 </style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -310,6 +348,7 @@
   <div class="wrap">
     <a class="brand" href="#top">Payday 2</a>
     <nav aria-label="页面导航">
+      <a href="#vault">金库</a>
       <a href="#crimenet">Crime.net</a>
       <a href="#flow">一次劫案</a>
       <a href="#modes">潜行与强攻</a>
@@ -346,6 +385,29 @@
         <p class="tag">先戴面具，再动手</p>
       </div>
     </div>
+  </section>
+
+  <!-- THE VAULT：可开枪的 3D 场景 -->
+  <section class="vault" id="vault">
+    <div class="head">
+      <p class="eyebrow">Live fire</p>
+      <h2 class="title">The Vault<span class="title-cn">金库试枪</span></h2>
+      <p class="lede">金库门半开着，钱码在托盘上，金条摆在桌上。开一枪试试：打碎展柜、把钱打飞、打灭吊灯、打掉墙角的摄像头。不过第一枪响起，警报也就跟着响了。</p>
+    </div>
+    <div id="vault-stage" aria-label="可交互的 3D 金库场景，点击画面开枪">
+      <div class="v-loading">Loading vault…</div>
+      <div id="v-cross" aria-hidden="true"></div>
+      <p id="v-hint">正在载入 3D 场景…</p>
+      <p id="v-status" aria-live="polite"></p>
+      <div class="v-hud">
+        <div class="box cash">Loot<b id="v-cash">$0</b></div>
+        <div class="right">
+          <button class="v-ui" id="v-reload" type="button">换弹 R</button>
+          <div class="box">Ammo<b id="v-ammo">12 / 12</b></div>
+        </div>
+      </div>
+    </div>
+    <p class="v-credit">场景用 three.js 实时渲染，模型、贴图和枪声都是程序生成的，没有使用游戏素材。</p>
   </section>
 
   <!-- Crime.net -->
@@ -677,5 +739,6 @@
   };
   const s=document.createElement('script'); s.src='https://www.youtube.com/iframe_api'; document.head.appendChild(s);
 </script>
+<script type="module" src="assets/js/vault.js"></script>
 </body>
 </html>
