@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="zh-CN" data-mode="stealth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>收获日 2 · PAYDAY 2 入门档案（粉丝向介绍页）</title>
+<meta name="description" content="一个粉丝向的 PAYDAY 2 入门介绍页：Crime.net、潜行与强攻、船员、难度与成长。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* 配色取自游戏 UI：纯黑底、白字、Crime.net 亮蓝高亮、风险黄、职业红 */
+  :root{
+    --black:#050607;
+    --panel:rgba(8,10,12,.78);
+    --line:rgba(255,255,255,.12);
+    --line-2:rgba(255,255,255,.22);
+    --text:#ffffff;
+    --dim:#9aa3ab;
+    --blue:#4dc6ff;        /* 菜单与 Crime.net 高亮 */
+    --blue-deep:#0b6fa8;
+    --risk:#ffcc00;        /* 风险/骷髅黄、突袭横幅 */
+    --pro:#ff3333;         /* Pro Job / 警报红 */
+    --cash:#8fd16a;
+    --accent:var(--blue);
+    --ui:"Barlow Condensed","DIN Condensed","Arial Narrow","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --logo:"Archivo Black","Arial Black",Impact,sans-serif;
+    --body:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+    --wrap:1200px;
+  }
+  html[data-mode="loud"]{ --accent:var(--pro); --line:rgba(255,80,80,.18); --line-2:rgba(255,80,80,.32); }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;background:var(--black)}
+  body{margin:0;background:var(--black);color:var(--text);font:16px/1.75 var(--body);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  button{font:inherit;color:inherit}
+  img{display:block;max-width:100%}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 32px}
+  p{margin:0}
+  h1,h2,h3{margin:0;font-weight:700}
+
+  /* 胶片颗粒 */
+  .grain{position:fixed;inset:-50%;z-index:60;pointer-events:none;opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1.2s steps(6) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+  /* 统一的游戏 UI 文字层级 */
+  .eyebrow{font:600 14px/1 var(--ui);letter-spacing:.28em;text-transform:uppercase;color:var(--accent);transition:color .4s}
+  .title{font:700 clamp(44px,6.4vw,84px)/.92 var(--ui);text-transform:uppercase;letter-spacing:.01em;margin-top:14px}
+  .title-cn{display:block;font:500 15px/1.4 var(--body);letter-spacing:.3em;color:var(--dim);margin-top:14px}
+  .lede{color:var(--dim);max-width:38em;margin-top:18px;font-size:16px}
+
+  /* ---------- 突袭横幅 ---------- */
+  .assault{position:fixed;inset:0 0 auto 0;z-index:50;height:42px;overflow:hidden;
+    background:repeating-linear-gradient(-45deg,var(--risk) 0 16px,#0a0a0a 16px 32px);
+    transform:translateY(-100%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+  html[data-mode="loud"] .assault{transform:none}
+  .assault span{position:absolute;inset:6px 0;display:flex;align-items:center;white-space:nowrap;
+    background:#0a0a0a;color:var(--risk);font:700 19px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;
+    animation:ticker 16s linear 3}
+  @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .siren{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;transition:opacity .4s}
+  html[data-mode="loud"] .siren{opacity:1;animation:siren 1.1s steps(1) infinite}
+  @keyframes siren{
+    0%{box-shadow:inset 110px 0 140px -70px rgba(255,40,40,.5),inset -110px 0 140px -70px rgba(30,90,255,0)}
+    50%{box-shadow:inset 110px 0 140px -70px rgba(255,40,40,0),inset -110px 0 140px -70px rgba(30,90,255,.5)}
+  }
+
+  /* ---------- 顶栏 ---------- */
+  .top{position:sticky;top:0;z-index:30;background:rgba(5,6,7,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transition:top .45s}
+  html[data-mode="loud"] .top{top:42px}
+  .top .wrap{display:flex;align-items:center;gap:28px;height:60px}
+  .brand{font:400 22px/1 var(--logo);letter-spacing:.02em;text-decoration:none;text-transform:uppercase}
+  .top nav{display:flex;gap:4px;margin-left:auto}
+  .top nav a{font:600 16px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--dim);padding:10px 12px}
+  .top nav a:hover{color:var(--blue);background:rgba(77,198,255,.08)}
+
+  .alarm{display:flex;align-items:center;gap:10px;background:none;border:1px solid var(--line-2);padding:7px 14px 7px 9px;cursor:pointer;white-space:nowrap;font:600 15px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase}
+  .alarm:hover{border-color:var(--accent)}
+  .alarm .knob{width:36px;height:18px;background:#1b2229;position:relative;transition:background .3s}
+  .alarm .knob::after{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;background:var(--text);transition:transform .3s}
+  html[data-mode="loud"] .alarm .knob{background:var(--pro)}
+  html[data-mode="loud"] .alarm .knob::after{transform:translateX(18px)}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 70% at 72% 45%,rgba(77,198,255,.10),transparent 70%);transition:background .6s;pointer-events:none}
+  html[data-mode="loud"] .hero::before{background:radial-gradient(60% 70% at 72% 45%,rgba(255,51,51,.16),transparent 70%)}
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:32px;min-height:min(calc(100vh - 60px),840px);padding-top:40px;padding-bottom:56px}
+  .wordmark{font:400 clamp(64px,9.4vw,138px)/.86 var(--logo);text-transform:uppercase;letter-spacing:-.02em;word-spacing:-.12em;white-space:nowrap;margin:0;
+    color:#f2f2f2;
+    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008 .22' numOctaves='3' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -18 12.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008 .22' numOctaves='3' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -18 12.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    -webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    text-shadow:0 0 1px rgba(255,255,255,.4)}
+  .hero .cn{font:500 clamp(18px,2vw,24px)/1.3 var(--body);margin-top:24px;letter-spacing:.42em;color:var(--dim)}
+  .hero .pitch{color:#c7cdd2;margin-top:20px;max-width:31em;font-size:16px}
+  .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;font:700 18px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;border:1px solid var(--line-2);cursor:pointer;background:rgba(255,255,255,.02);transition:background .25s,color .25s,border-color .25s}
+  .btn:hover{color:var(--blue);border-color:var(--blue);background:rgba(77,198,255,.1)}
+  .btn.solid{background:var(--accent);border-color:var(--accent);color:#04121b}
+  .btn.solid:hover{filter:brightness(1.1);color:#04121b}
+  html[data-mode="loud"] .btn.solid{color:#fff}
+  .facts{display:flex;flex-wrap:wrap;margin-top:44px;border-top:1px solid var(--line)}
+  .facts div{padding:16px 28px 0 0;margin-right:28px;font-size:14px;color:var(--dim)}
+  .facts div + div{padding-left:28px;border-left:1px solid var(--line);margin-left:-28px}
+  .facts strong{display:block;color:var(--text);font:700 24px/1.2 var(--ui);letter-spacing:.08em;text-transform:uppercase}
+
+  .mask-stage{position:relative;justify-self:center;width:min(460px,100%)}
+  .mask-stage img{width:100%;height:auto;
+    -webkit-mask-image:radial-gradient(closest-side,#000 72%,transparent 100%);mask-image:radial-gradient(closest-side,#000 72%,transparent 100%);
+    filter:contrast(1.05) saturate(.9);transition:filter .6s}
+  html[data-mode="loud"] .mask-stage img{filter:contrast(1.12) saturate(1.1) sepia(.12) hue-rotate(-12deg)}
+  .mask-stage .tag{position:absolute;left:4%;bottom:8%;background:rgba(5,6,7,.85);border-left:3px solid var(--accent);color:var(--text);padding:8px 14px;font:600 15px/1.3 var(--ui);letter-spacing:.18em;text-transform:uppercase;transition:border-color .4s}
+
+  section.block{padding:120px 0;border-bottom:1px solid var(--line)}
+
+  /* ---------- Crime.net ---------- */
+  .net{display:grid;grid-template-columns:1fr 360px;margin-top:48px;border:1px solid var(--line-2);background:var(--panel)}
+  .map{position:relative;aspect-ratio:16/11;overflow:hidden;border-right:1px solid var(--line-2);background:#020509 url("assets/img/crimenet-map.jpg") center/cover no-repeat}
+  .map::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 0 50%,rgba(77,198,255,.05) 50%);background-size:100% 3px;pointer-events:none}
+  .map::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 120px rgba(0,0,0,.85);pointer-events:none}
+  .map-label{position:absolute;left:16px;top:14px;z-index:2;font:600 13px/1 var(--ui);letter-spacing:.26em;color:var(--blue);text-transform:uppercase}
+  .node{position:absolute;z-index:2;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:0;padding:0;cursor:pointer;background:transparent;opacity:0;animation:pop .4s cubic-bezier(.3,1.6,.5,1) forwards}
+  .node::before{content:"";position:absolute;inset:15px;border-radius:50%;background:var(--node,var(--blue));box-shadow:0 0 12px var(--node,var(--blue))}
+  .node::after{content:"";position:absolute;inset:9px;border-radius:50%;border:1.5px solid var(--node,var(--blue));animation:ping 2.4s ease-out infinite}
+  .node[data-loud-only]{--node:var(--risk)}
+  .node .nm{position:absolute;left:40px;top:50%;transform:translateY(-50%);white-space:nowrap;font:600 14px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;background:rgba(0,0,0,.82);border-left:2px solid var(--node,var(--blue));padding:5px 9px;pointer-events:none}
+  .node.flip .nm{left:auto;right:40px;border-left:0;border-right:2px solid var(--node,var(--blue))}
+  .node[aria-pressed="true"]{z-index:3}
+  .node[aria-pressed="true"]::before{background:#fff;box-shadow:0 0 16px #fff}
+  .node[aria-pressed="true"] .nm{background:#fff;color:#000}
+  @keyframes pop{from{opacity:0;transform:translate(-50%,-50%) scale(.2)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  @keyframes ping{from{transform:scale(.7);opacity:.9}to{transform:scale(1.9);opacity:0}}
+  .map .legend{position:absolute;z-index:2;left:16px;bottom:14px;display:flex;gap:18px;font:600 14px/1 var(--ui);letter-spacing:.12em;color:#cfd6dc;background:rgba(0,0,0,.6);padding:8px 12px}
+  .legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:1px}
+
+  .dossier{padding:0;display:flex;flex-direction:column}
+  .dossier .bar{font:600 13px/1 var(--ui);letter-spacing:.28em;text-transform:uppercase;color:#04121b;background:var(--blue);padding:10px 24px}
+  .dossier .inner{padding:24px;display:flex;flex-direction:column;gap:16px}
+  .dossier .contact{color:var(--dim);font:600 15px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase}
+  .dossier h3{font:700 44px/1 var(--ui);text-transform:uppercase;letter-spacing:.02em}
+  .dossier .desc{color:#c7cdd2;font-size:15px}
+  .spec{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;font-size:15px;border-top:1px solid var(--line);padding-top:16px;margin:0}
+  .spec dt{color:var(--dim);font:600 15px/1.6 var(--ui);letter-spacing:.14em;text-transform:uppercase}
+  .spec dd{margin:0}
+  .pill{display:inline-block;padding:3px 10px;font:600 14px/1.3 var(--ui);letter-spacing:.12em;margin-right:6px;border:1px solid}
+  .pill.s{color:var(--blue);border-color:rgba(77,198,255,.5);background:rgba(77,198,255,.08)}
+  .pill.l{color:var(--risk);border-color:rgba(255,204,0,.5);background:rgba(255,204,0,.08)}
+
+  /* ---------- 流程 ---------- */
+  .flow{list-style:none;margin:60px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);counter-reset:s;position:relative}
+  .flow::before{content:"";position:absolute;left:0;right:0;top:25px;border-top:1px solid var(--line-2)}
+  .flow li{counter-increment:s;padding-right:24px;position:relative}
+  .flow li::before{content:counter(s,decimal-leading-zero);display:grid;place-items:center;width:52px;height:52px;background:var(--black);border:1px solid var(--accent);font:700 22px/1 var(--ui);letter-spacing:.05em;margin-bottom:22px;position:relative;transition:border-color .4s}
+  .flow li:nth-child(3)::before{background:var(--accent);color:#04121b;border-color:var(--accent);transition:background .4s}
+  .flow h3{font:700 24px/1.1 var(--ui);letter-spacing:.06em;margin-bottom:10px}
+  .flow p{color:var(--dim);font-size:15px}
+
+  /* ---------- 两种打法 ---------- */
+  .modes{display:grid;grid-template-columns:1fr 1fr;margin-top:52px;border:1px solid var(--line-2)}
+  .mode{padding:40px 36px;background:var(--panel)}
+  .mode + .mode{border-left:1px solid var(--line-2)}
+  .mode.quiet{background:linear-gradient(160deg,rgba(77,198,255,.08),transparent 60%),var(--panel)}
+  .mode.loud{background:repeating-linear-gradient(-45deg,rgba(255,204,0,.045) 0 14px,transparent 14px 28px),var(--panel)}
+  .mode h3{font:700 54px/1 var(--ui);text-transform:uppercase;letter-spacing:.04em}
+  .mode h3 small{display:block;font:500 14px/1.6 var(--body);letter-spacing:.3em;color:var(--dim);margin-top:8px}
+  .mode.quiet h3{color:var(--blue)} .mode.loud h3{color:var(--risk)}
+  .mode > p{margin-top:12px;color:#c7cdd2}
+  .mode ul{list-style:none;padding:0;margin:26px 0 0}
+  .mode li{padding:14px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:128px 1fr;gap:14px;font-size:15px}
+  .mode li b{font:700 19px/1.4 var(--ui);letter-spacing:.08em;text-transform:uppercase}
+  .mode li span{color:var(--dim)}
+
+  /* ---------- 船员 ---------- */
+  .crew{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:52px}
+  .card{background:var(--panel);border:1px solid var(--line-2);position:relative;overflow:hidden;transition:border-color .3s}
+  .card:hover{border-color:var(--accent)}
+  .card .shot{position:relative;aspect-ratio:1/1;background:#000;overflow:hidden}
+  .card .shot img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform .6s,filter .6s;filter:grayscale(.15) contrast(1.05)}
+  .card:hover .shot img{transform:scale(1.1)}
+  .card .shot::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(5,6,7,.95))}
+  .card .meta{padding:0 20px 22px;margin-top:-34px;position:relative}
+  .card h3{font:700 34px/1 var(--ui);text-transform:uppercase;letter-spacing:.04em}
+  .card .role{color:var(--accent);font:600 15px/1 var(--ui);letter-spacing:.2em;margin:8px 0 12px;transition:color .4s}
+  html[data-mode="loud"] .card .role{color:var(--risk)}
+  .card p{color:var(--dim);font-size:14.5px}
+  .bench{margin-top:30px;color:var(--dim);font-size:15px;max-width:62em}
+  .bench strong{color:var(--text);font:600 17px/1 var(--ui);letter-spacing:.06em}
+
+  /* ---------- 难度 ---------- */
+  .diff{margin-top:48px;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center;border:1px solid var(--line-2);background:var(--panel);padding:40px}
+  .diff label{font:600 14px/1 var(--ui);letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+  .skulls{display:flex;gap:10px;min-height:52px;align-items:center}
+  .skulls svg{width:38px;height:46px;filter:drop-shadow(0 0 6px currentColor)}
+  .skulls .none{color:var(--dim);font:600 16px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase}
+  .diff output{display:block;font:700 clamp(46px,6vw,76px)/1 var(--ui);text-transform:uppercase;letter-spacing:.02em;margin:18px 0 10px}
+  .diff .dtext{color:#c7cdd2;min-height:3.5em}
+  input[type=range]{width:100%;accent-color:var(--accent);height:28px;margin-top:14px}
+  .ticks{display:flex;justify-content:space-between;font:600 13px/1 var(--ui);color:var(--dim);margin-top:8px;letter-spacing:.12em;text-transform:uppercase}
+
+  /* ---------- 成长 ---------- */
+  .grow{display:grid;grid-template-columns:repeat(3,1fr);margin-top:52px;border-top:1px solid var(--text)}
+  .grow > div{padding:30px 30px 0 0}
+  .grow > div + div{padding-left:30px;border-left:1px solid var(--line)}
+  .grow .big{font:700 76px/1 var(--ui);color:var(--accent);transition:color .4s}
+  .grow h3{font:700 24px/1.2 var(--ui);letter-spacing:.06em;margin:10px 0 10px}
+  .grow p{color:var(--dim);font-size:15px}
+  .trees{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:6px;margin-top:16px}
+  .trees span{border:1px solid var(--line-2);padding:3px 10px;font:600 14px/1.4 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:#c7cdd2}
+
+  /* ---------- 发薪日 ---------- */
+  .payday{position:relative;overflow:hidden;padding:160px 0 150px;background:#000}
+  .payday .bg{position:absolute;inset:0;background:url("assets/img/payday-bag.jpg") right center/cover no-repeat;opacity:.9}
+  .payday .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.85) 35%,rgba(0,0,0,.2) 75%,rgba(0,0,0,.4) 100%),linear-gradient(transparent 70%,#000)}
+  .payday .wrap{position:relative}
+  .payday h2{font:700 clamp(72px,11vw,150px)/.9 var(--ui);text-transform:uppercase;letter-spacing:.01em}
+  .payday h2 span{color:var(--cash)}
+  .payday .split{display:flex;gap:44px;flex-wrap:wrap;margin-top:34px}
+  .payday .split div{font-size:15px;color:#c7cdd2;max-width:22em;border-left:2px solid var(--cash);padding-left:16px}
+  .payday .split strong{display:block;color:var(--text);font:700 28px/1.2 var(--ui);letter-spacing:.08em}
+
+  footer{border-top:1px solid var(--line);padding:36px 0 120px;color:var(--dim);font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+
+  /* ---------- BGM 播放器 ---------- */
+  .bgm{position:fixed;right:16px;bottom:16px;z-index:55;width:248px;background:rgba(5,6,7,.94);border:1px solid var(--line-2);backdrop-filter:blur(8px);font-family:var(--ui)}
+  .bgm-head{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+  .bgm-head .eq{display:flex;gap:2px;align-items:flex-end;height:14px;width:16px}
+  .bgm-head .eq i{flex:1;background:var(--accent);height:30%;transition:background .4s}
+  .bgm.playing .eq i{animation:eq .9s ease-in-out infinite}
+  .bgm.playing .eq i:nth-child(2){animation-delay:.2s}.bgm.playing .eq i:nth-child(3){animation-delay:.45s}
+  @keyframes eq{0%,100%{height:25%}50%{height:100%}}
+  .bgm-head .t{flex:1;min-width:0;font:600 13px/1.2 var(--ui);letter-spacing:.2em;text-transform:uppercase}
+  .bgm-head .t small{display:block;color:var(--dim);letter-spacing:.08em;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bgm .icon{width:32px;height:32px;display:grid;place-items:center;background:none;border:1px solid var(--line-2);cursor:pointer;color:var(--text);padding:0}
+  .bgm .icon:hover{border-color:var(--blue);color:var(--blue)}
+  .bgm .icon svg{width:14px;height:14px;fill:currentColor}
+  .bgm-body{padding:12px}
+  .bgm.collapsed .bgm-body{height:0;padding:0;overflow:hidden}
+  .bgm .screen{width:200px;height:200px;margin:0 auto;background:#000;border:1px solid var(--line)}
+  .bgm .screen iframe{width:200px;height:200px;display:block;border:0}
+  .bgm .ctl{display:flex;justify-content:center;gap:8px;margin:12px 0 10px}
+  .bgm .ctl .icon{width:40px;height:36px}
+  .bgm .ctl .icon.play{width:56px;background:var(--accent);border-color:var(--accent);color:#04121b}
+  html[data-mode="loud"] .bgm .ctl .icon.play{color:#fff}
+  .bgm ol{list-style:none;margin:0;padding:0;max-height:150px;overflow:auto;border-top:1px solid var(--line)}
+  .bgm li button{width:100%;display:flex;gap:10px;align-items:baseline;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:8px 4px;cursor:pointer;font:600 15px/1.2 var(--ui);letter-spacing:.06em;color:#c7cdd2}
+  .bgm li button b{font-weight:600;color:var(--dim);width:18px;font-size:13px}
+  .bgm li button:hover{color:var(--blue)}
+  .bgm li button[aria-current="true"]{color:var(--accent)}
+  .bgm .src{margin-top:8px;font:500 12px/1.4 var(--body);color:var(--dim)}
+  .bgm .src a{color:var(--dim)}
+  .bgm .err{margin-top:6px;font:500 12px/1.4 var(--body);color:var(--risk)}
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width:980px){
+    .net{grid-template-columns:1fr}
+    .map{border-right:0;border-bottom:1px solid var(--line-2)}
+    .flow{grid-template-columns:1fr;gap:28px}
+    .flow::before{left:25px;right:auto;top:0;bottom:0;border-top:0;border-left:1px solid var(--line-2)}
+    .flow li{display:grid;grid-template-columns:52px 1fr;column-gap:20px;padding:0}
+    .flow li::before{grid-row:span 2;margin:0}
+    .crew{grid-template-columns:1fr 1fr}
+    .diff{grid-template-columns:1fr;gap:28px;padding:28px}
+  }
+  @media (max-width:760px){
+    .wrap{padding:0 18px}
+    .top nav{display:none}
+    .top .wrap{justify-content:space-between}
+    .hero .wrap{grid-template-columns:1fr;min-height:0;padding-top:20px;gap:4px}
+    .mask-stage{width:min(260px,66%);order:-1}
+    .hero .cn{margin-top:16px}
+    .facts div,.facts div + div{padding:12px 16px 0 0;margin:0 16px 0 0;border-left:0}
+    section.block{padding:76px 0}
+    .modes{grid-template-columns:1fr}
+    .mode + .mode{border-left:0;border-top:1px solid var(--line-2)}
+    .mode{padding:30px 22px}
+    .mode li{grid-template-columns:104px 1fr}
+    .crew{grid-template-columns:1fr 1fr;gap:10px}
+    .card .meta{padding:0 12px 16px}
+    .card h3{font-size:26px}
+    .grow{grid-template-columns:1fr}
+    .grow > div,.grow > div + div{padding:26px 0;border-left:0;border-bottom:1px solid var(--line)}
+    .map{aspect-ratio:4/5}
+    .node .nm{font-size:12px;padding:3px 6px}
+    .dossier h3{font-size:34px}
+    .payday{padding:110px 0 260px}
+    .payday .bg{background-position:72% bottom;background-size:auto 70%}
+    .payday .bg::after{background:linear-gradient(#000 0%,rgba(0,0,0,.75) 45%,rgba(0,0,0,.1) 80%)}
+    .bgm{right:10px;bottom:10px;width:min(248px,calc(100vw - 20px))}
+  }
+  @media (max-width:380px){ .crew{grid-template-columns:1fr} }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important}
+    .node{opacity:1}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="assault" aria-hidden="true"><span>Police assault in progress ／ 警方突袭进行中 ／ Police assault in progress ／ 警方突袭进行中 ／ Police assault in progress ／ 警方突袭进行中 ／ Police assault in progress ／ 警方突袭进行中 ／</span></div>
+<div class="siren" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Payday 2</a>
+    <nav aria-label="页面导航">
+      <a href="#crimenet">Crime.net</a>
+      <a href="#flow">一次劫案</a>
+      <a href="#modes">潜行与强攻</a>
+      <a href="#crew">船员</a>
+      <a href="#difficulty">难度</a>
+    </nav>
+    <button class="alarm" id="alarm" aria-pressed="false" type="button">
+      <span class="knob" aria-hidden="true"></span><span class="lbl">触发警报</span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1 class="wordmark">Payday 2</h1>
+        <p class="cn">收获日 2</p>
+        <p class="pitch">四个人，四张面具，一份合同。你们大多在华盛顿特区接活：银行、珠宝店、博物馆，偶尔也会飞去别的城市。能悄悄拿走就悄悄拿走，被发现了就扛住警察一波又一波的突袭，把钱袋扔上车再走。</p>
+        <div class="ctas">
+          <a class="btn solid" href="#crimenet">打开 Crime.net</a>
+          <button class="btn" type="button" id="alarm2" aria-pressed="false">试试被发现</button>
+        </div>
+        <div class="facts">
+          <div><strong>2013</strong>首发于 PC / PS3 / X360</div>
+          <div><strong>4 人合作</strong>第一人称劫案射击</div>
+          <div><strong>Overkill</strong>开发，505 Games 发行</div>
+        </div>
+      </div>
+
+      <div class="mask-stage">
+        <img src="assets/img/hero-mask.jpg" width="865" height="1000" alt="一张布满划痕、涂着红蓝油彩的小丑劫匪面具">
+        <p class="tag">先戴面具，再动手</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crime.net -->
+  <section class="block" id="crimenet">
+    <div class="wrap">
+      <p class="eyebrow">Contract broker</p>
+      <h2 class="title">Crime.net<span class="title-cn">接单地图</span></h2>
+      <p class="lede">游戏里的接单地图。合同会在城市各处冒出来，每份都写着谁雇你、要干几天、能不能潜行。点一个看看。</p>
+
+      <div class="net">
+        <div class="map">
+          <span class="map-label">Washington, D.C.</span>
+          <div id="nodes"></div>
+          <div class="legend"><span><i style="background:var(--blue)"></i>可潜行</span><span><i style="background:var(--risk)"></i>只能强攻</span></div>
+        </div>
+
+        <article class="dossier" aria-live="polite">
+          <div class="bar">Contract</div>
+          <div class="inner">
+            <p class="contact" id="d-contact"></p>
+            <h3 id="d-name"></h3>
+            <p class="desc" id="d-desc"></p>
+            <dl class="spec">
+              <dt>天数</dt><dd id="d-days"></dd>
+              <dt>打法</dt><dd id="d-style"></dd>
+            </dl>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 一次劫案 -->
+  <section class="block" id="flow">
+    <div class="wrap">
+      <p class="eyebrow">Heist flow</p>
+      <h2 class="title">The Heist<span class="title-cn">一次劫案怎么走</span></h2>
+      <p class="lede">每一局都是同一条线。区别在于中间哪一步出了岔子。</p>
+      <ol class="flow">
+        <li><h3>接合同</h3><p>在 Crime.net 上挑一份，看清雇主、天数和难度。</p></li>
+        <li><h3>踩点</h3><p>不戴面具时你只是路人。可以四处走、找摄像头和保安的位置。</p></li>
+        <li><h3>戴上面具</h3><p>这一刻起你就是劫匪。能动手了，也会被认出来。</p></li>
+        <li><h3>装袋运走</h3><p>现金、金条、珠宝装进袋子，一袋一袋扔上车或船。</p></li>
+        <li><h3>撤离</h3><p>所有人回到撤离点，这一单才算完成。翻一张牌，看看额外奖励。</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 两种打法 -->
+  <section class="block" id="modes">
+    <div class="wrap">
+      <p class="eyebrow">Stealth or loud</p>
+      <h2 class="title">Quiet or Loud<span class="title-cn">悄悄拿，还是硬抢</span></h2>
+      <p class="lede">很多劫案两种都能打。警报一响，整局就换了一个游戏。右上角的开关可以让这个页面也体会一下。</p>
+      <div class="modes">
+        <div class="mode quiet">
+          <h3>Stealth<small>潜行</small></h3>
+          <p>没人知道你来过。</p>
+          <ul>
+            <li><b>摄像头</b><span>被拍到就会拉响警报。先找到监控室，或者绕开视线。</span></li>
+            <li><b>保安对讲机</b><span>制服保安后要替他回话，名额有限，用完了就瞒不住。</span></li>
+            <li><b>平民</b><span>有人看见就会报警。用扎带让他们老实待着。</span></li>
+            <li><b>ECM 干扰器</b><span>暂时屏蔽摄像头和通讯，给你一小段安全时间。</span></li>
+          </ul>
+        </div>
+        <div class="mode loud">
+          <h3>Loud<small>强攻</small></h3>
+          <p>警察会一波一波地冲进来。</p>
+          <ul>
+            <li><b>Bulldozer</b><span>全身重甲的推土机，扛得住大部分子弹。</span></li>
+            <li><b>Cloaker</b><span>从暗处冲出来一脚把你放倒，队友得来救。</span></li>
+            <li><b>Taser</b><span>用电击枪把你电得手脚抽搐，乱开枪。</span></li>
+            <li><b>Shield</b><span>举着防弹盾往前推，得绕到侧面打。</span></li>
+            <li><b>Medic</b><span>能把倒下的警察救起来，优先解决。</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 船员 -->
+  <section class="block" id="crew">
+    <div class="wrap">
+      <p class="eyebrow">The gang</p>
+      <h2 class="title">The Crew<span class="title-cn">船员</span></h2>
+      <p class="lede">一开始是四个人。后来队伍越来越大。</p>
+      <div class="crew" id="crewList"></div>
+      <p class="bench">后来陆续加入的还有 <strong>Houston</strong>、<strong>John Wick</strong>、<strong>Clover</strong>、<strong>Dragan</strong>、<strong>Jacket</strong>、<strong>Bonnie</strong>、<strong>Sokol</strong>、<strong>Jiro</strong>、<strong>Bodhi</strong>、<strong>Sydney</strong> 等等。全程在耳机里给你下指令的，是策划人 <strong>Bain</strong>。</p>
+    </div>
+  </section>
+
+  <!-- 难度 -->
+  <section class="block" id="difficulty">
+    <div class="wrap">
+      <p class="eyebrow">Risk level</p>
+      <h2 class="title">Difficulty<span class="title-cn">选个难度</span></h2>
+      <p class="lede">一共七档，用骷髅数量标记。难度越高，敌人越多越硬，报酬也越高。</p>
+      <div class="diff">
+        <div>
+          <label for="dslider">拖动选择难度</label>
+          <input type="range" id="dslider" min="0" max="6" step="1" value="3">
+          <div class="ticks" aria-hidden="true"><span>Normal</span><span>Death Sentence</span></div>
+        </div>
+        <div>
+          <div class="skulls" id="skulls"></div>
+          <output id="dname" for="dslider"></output>
+          <p class="dtext" id="dtext"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 成长 -->
+  <section class="block" id="grow">
+    <div class="wrap">
+      <p class="eyebrow">Progression</p>
+      <h2 class="title">Level Up<span class="title-cn">越干越专业</span></h2>
+      <p class="lede">每一单赚来的经验和钱，都会变成下一单的本事。</p>
+      <div class="grow">
+        <div>
+          <div class="big">5</div>
+          <h3>技能树</h3>
+          <p>每棵树决定你在队里干什么：指挥、扛伤、架设备、潜行，或者近身突围。</p>
+          <div class="trees"><span>Mastermind</span><span>Enforcer</span><span>Technician</span><span>Ghost</span><span>Fugitive</span></div>
+        </div>
+        <div>
+          <div class="big">20+</div>
+          <h3>天赋卡组</h3>
+          <p>Perk Deck 给你一套被动能力，比如 Crew Chief 加强全队、Muscle 加厚血量、Burglar 专精潜行。</p>
+        </div>
+        <div>
+          <div class="big">100</div>
+          <h3>级以后：Infamy</h3>
+          <p>满级之后可以选择洗白重来，换来恶名等级和专属奖励。很多人在这一步才算真正入坑。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 发薪日 -->
+  <section class="payday">
+    <div class="bg" role="img" aria-label="昏暗仓库里，一个塞满美元钞票的帆布袋"></div>
+    <div class="wrap">
+      <p class="eyebrow">Heist complete</p>
+      <h2>Payday<span>.</span></h2>
+      <p class="lede">撤离成功，钱分两份到账。</p>
+      <div class="split">
+        <div><strong>可花现金</strong>买枪、改枪、做面具、解锁技能。</div>
+        <div><strong>离岸账户</strong>大头存在海外，留着以后用。</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>这是一个粉丝向的介绍页，与 Starbreeze、OVERKILL 或 505 Games 无关。页面图片为 AI 生成的原创素材，未使用游戏官方美术。</p>
+    <p>原声：Simon Viklund，播放器内嵌其 YouTube 官方发行频道的音轨 ／ 续作《PAYDAY 3》2023 年发售</p>
+  </div>
+</footer>
+
+<!-- BGM 播放器：内嵌 Simon Viklund - Topic 官方发行频道的音轨 -->
+<aside class="bgm" id="bgm" aria-label="背景音乐播放器">
+  <div class="bgm-head">
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="t">BGM<small id="bgm-now">I Will Give You My All</small></span>
+    <button class="icon" id="bgm-mini" type="button" aria-label="播放" title="播放 / 暂停"><svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z"/></svg></button>
+    <button class="icon" id="bgm-fold" type="button" aria-expanded="true" aria-label="收起播放器" title="收起 / 展开"><svg viewBox="0 0 16 16"><path d="M2 5h12L8 12z"/></svg></button>
+  </div>
+  <div class="bgm-body">
+    <div class="screen"><div id="yt"></div></div>
+    <div class="ctl">
+      <button class="icon" id="bgm-prev" type="button" aria-label="上一首"><svg viewBox="0 0 16 16"><path d="M3 2h2v12H3zM14 2v12L6 8z"/></svg></button>
+      <button class="icon play" id="bgm-play" type="button" aria-label="播放"><svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z"/></svg></button>
+      <button class="icon" id="bgm-next" type="button" aria-label="下一首"><svg viewBox="0 0 16 16"><path d="M11 2h2v12h-2zM2 2v12l8-6z"/></svg></button>
+    </div>
+    <ol id="bgm-list"></ol>
+    <p class="src">音轨来自 YouTube「Simon Viklund - Topic」官方发行频道。</p>
+    <p class="err" id="bgm-err" hidden></p>
+  </div>
+</aside>
+
+<script>
+  /* ---------- 警报开关 ---------- */
+  const root=document.documentElement, alarm=document.getElementById('alarm'), alarm2=document.getElementById('alarm2');
+  function setMode(loud){
+    root.dataset.mode = loud ? 'loud' : 'stealth';
+    alarm.setAttribute('aria-pressed', loud);
+    alarm2.setAttribute('aria-pressed', loud);
+    alarm.querySelector('.lbl').textContent = loud ? '恢复潜行' : '触发警报';
+    alarm2.textContent = loud ? '恢复潜行' : '试试被发现';
+  }
+  alarm.addEventListener('click',()=>setMode(root.dataset.mode!=='loud'));
+  alarm2.addEventListener('click',()=>setMode(root.dataset.mode!=='loud'));
+  if(new URLSearchParams(location.search).get('mode')==='loud') setMode(true);
+
+  /* ---------- Crime.net 合同 ---------- */
+  const jobs=[
+    {n:'Jewelry Store',c:'Bain',d:1,s:true,x:24,y:22,t:'新手第一单。砸开柜台，把珠宝装袋。动作快一点，几分钟就能结束。'},
+    {n:'Bank Heist',c:'Bain',d:1,s:true,x:46,y:30,t:'经典银行案。悄悄进金库，或者直接钻开大门，等钻头转完。'},
+    {n:'Four Stores',c:'Vlad',d:1,s:true,x:14,y:52,t:'一条街上四家店，挨个打开保险箱。适合练手。'},
+    {n:'Mallcrasher',c:'Vlad',d:1,s:false,x:62,y:16,t:'不偷东西，专门砸。在商场里造成足够的财产损失就算完成。'},
+    {n:'Rats',c:'Hector',d:3,s:false,x:84,y:36,t:'第一天在拖车里煮东西，配方读错一步就会炸。后面两天更乱。'},
+    {n:'Framing Frame',c:'The Elephant',d:3,s:true,x:34,y:60,t:'从画廊偷画，再拿去做交易，最后潜进一栋大宅。三天连贯的一整套。'},
+    {n:'Big Bank',c:'The Dentist',d:1,s:true,x:54,y:44,t:'华盛顿最大的银行之一。准备充分、分工明确，才能把金库搬空。'},
+    {n:'Golden Grin Casino',c:'The Dentist',d:1,s:true,x:72,y:52,t:'从赌场地下的金库下手。穿正装混进去，或者一路打进去。'},
+    {n:'Hoxton Breakout',c:'The Dentist',d:2,s:false,x:20,y:80,t:'把被捕的老队员 Hoxton 从押运车里劫出来，再一起查清是谁出卖了他。'},
+    {n:'Bomb: Dockyard',c:'The Butcher',d:1,s:false,x:84,y:74,t:'在码头的集装箱堆里找到炸弹部件。场地大，敌人多。'}
+  ];
+  const wrap=document.getElementById('nodes');
+  function pick(i){
+    const j=jobs[i];
+    wrap.querySelectorAll('.node').forEach((b,k)=>b.setAttribute('aria-pressed',k===i));
+    document.getElementById('d-contact').textContent='雇主：'+j.c;
+    document.getElementById('d-name').textContent=j.n;
+    document.getElementById('d-desc').textContent=j.t;
+    document.getElementById('d-days').textContent=j.d+' 天';
+    document.getElementById('d-style').innerHTML=j.s?'<span class="pill s">可潜行</span><span class="pill l">可强攻</span>':'<span class="pill l">只能强攻</span>';
+  }
+  jobs.forEach((j,i)=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='node';
+    if(!j.s) b.dataset.loudOnly='';
+    if(j.x>=70) b.classList.add('flip');
+    b.style.left=j.x+'%';b.style.top=j.y+'%';
+    b.style.animationDelay=(i*0.12)+'s';
+    b.setAttribute('aria-label',j.n+'，雇主 '+j.c);
+    b.innerHTML='<span class="nm">'+j.n+'</span>';
+    b.addEventListener('click',()=>pick(i));
+    wrap.appendChild(b);
+  });
+  pick(1);
+
+  /* ---------- 船员 ---------- */
+  const crew=[
+    {n:'Dallas',r:'队长',t:'团队的发起人和主心骨。冷静，说话算数。',img:'crew-1.jpg'},
+    {n:'Chains',r:'枪手',t:'火力担当。哪里需要有人顶上去，他就在哪里。',img:'crew-2.jpg'},
+    {n:'Wolf',r:'技术与爆破',t:'瑞典人，负责钻头、炸药和各种设备。',img:'crew-3.jpg'},
+    {n:'Hoxton',r:'元老',t:'嘴硬的英国人。被捕入狱后由 Houston 顶替，后来被兄弟们劫了出来。',img:'crew-4.jpg'}
+  ];
+  document.getElementById('crewList').innerHTML=crew.map(m=>`<article class="card"><div class="shot"><img src="assets/img/${m.img}" width="480" height="480" loading="lazy" alt="${m.n} 的面具"></div><div class="meta"><h3>${m.n}</h3><p class="role">${m.r}</p><p>${m.t}</p></div></article>`).join('');
+
+  /* ---------- 难度 ---------- */
+  const diffs=[
+    ['Normal','入门难度。熟悉地图和流程的好地方。'],
+    ['Hard','敌人多了一点，开始需要注意走位。'],
+    ['Very Hard','特种警察更常出现，乱冲会被教育。'],
+    ['OVERKILL','老玩家的日常难度。需要配合，也需要像样的配装。'],
+    ['Mayhem','敌人伤害和血量明显变高，失误的代价变大。'],
+    ['Death Wish','每一波突袭都很难扛，队伍得各司其职。'],
+    ['Death Sentence','最高难度。敌人最狠，容错几乎为零。']
+  ];
+  const skull=`<svg viewBox="0 0 44 52" aria-hidden="true"><path d="M22 2C10 2 2 10 2 22c0 8 4 13 8 16v8c0 2 2 4 4 4h16c2 0 4-2 4-4v-8c4-3 8-8 8-16C42 10 34 2 22 2z" fill="currentColor"/><path d="M8 22c0-3 4-6 8-5s6 5 5 8-6 4-9 3-4-3-4-6zM36 22c0-3-4-6-8-5s-6 5-5 8 6 4 9 3 4-3 4-6z" fill="#050607"/><path d="M22 30l-3 6h6z" fill="#050607"/><path d="M15 42v8M22 42v8M29 42v8" stroke="#050607" stroke-width="2.5"/></svg>`;
+  const ds=document.getElementById('dslider');
+  function showDiff(){
+    const v=+ds.value, sk=document.getElementById('skulls');
+    sk.innerHTML = v===0 ? '<span class="none">没有骷髅</span>' : Array.from({length:v},()=>skull).join('');
+    sk.style.color = v>=5 ? 'var(--pro)' : v>=1 ? 'var(--risk)' : 'var(--text)';
+    document.getElementById('dname').textContent=diffs[v][0];
+    document.getElementById('dtext').textContent=diffs[v][1];
+    ds.setAttribute('aria-valuetext',diffs[v][0]);
+  }
+  ds.addEventListener('input',showDiff); showDiff();
+
+  /* ---------- BGM 播放器（YouTube IFrame API） ---------- */
+  const tracks=[
+    {t:'I Will Give You My All 2017',id:'oN-8J1QA7f8'},
+    {t:'Master Plan',id:'n5_VBF7UiEQ'},
+    {t:'Tick Tock',id:'BJKOJUjVc9o'},
+    {t:'Fuse Box',id:'3VIcThpSBDo'},
+    {t:'Calling All Units',id:'Sq8pu9i-fhY'},
+    {t:'Razormind',id:'_Fl_LJBixfg'}
+  ];
+  const bgm=document.getElementById('bgm'), list=document.getElementById('bgm-list'), nowEl=document.getElementById('bgm-now'), errEl=document.getElementById('bgm-err');
+  const playBtn=document.getElementById('bgm-play'), miniBtn=document.getElementById('bgm-mini'), foldBtn=document.getElementById('bgm-fold');
+  const ICON_PLAY='<svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z"/></svg>', ICON_PAUSE='<svg viewBox="0 0 16 16"><path d="M3 2h4v12H3zM9 2h4v12H9z"/></svg>';
+  let cur=0, player=null, ready=false, playing=false, pendingPlay=false;
+  list.innerHTML=tracks.map((x,i)=>`<li><button type="button" data-i="${i}"><b>${String(i+1).padStart(2,'0')}</b>${x.t}</button></li>`).join('');
+  function markCurrent(){
+    nowEl.textContent=tracks[cur].t;
+    list.querySelectorAll('button').forEach((b,k)=>b.setAttribute('aria-current',k===cur));
+  }
+  function setPlaying(p){
+    playing=p; bgm.classList.toggle('playing',p);
+    [playBtn,miniBtn].forEach(b=>{b.innerHTML=p?ICON_PAUSE:ICON_PLAY;b.setAttribute('aria-label',p?'暂停':'播放');});
+  }
+  function load(i,autoplay){
+    cur=(i+tracks.length)%tracks.length; markCurrent(); errEl.hidden=true;
+    if(!ready){pendingPlay=autoplay;return;}
+    autoplay ? player.loadVideoById(tracks[cur].id) : player.cueVideoById(tracks[cur].id);
+  }
+  function toggle(){
+    if(!ready){pendingPlay=!pendingPlay;return;}
+    playing ? player.pauseVideo() : player.playVideo();
+  }
+  playBtn.addEventListener('click',toggle);
+  miniBtn.addEventListener('click',()=>{ if(!playing) setFold(false); toggle(); });
+  document.getElementById('bgm-prev').addEventListener('click',()=>load(cur-1,true));
+  document.getElementById('bgm-next').addEventListener('click',()=>load(cur+1,true));
+  list.addEventListener('click',e=>{const b=e.target.closest('button');if(b)load(+b.dataset.i,true);});
+  function setFold(folded){
+    bgm.classList.toggle('collapsed',folded);
+    foldBtn.setAttribute('aria-expanded',!folded);
+    foldBtn.setAttribute('aria-label',folded?'展开播放器':'收起播放器');
+    foldBtn.style.transform=folded?'rotate(180deg)':'';
+  }
+  foldBtn.addEventListener('click',()=>setFold(!bgm.classList.contains('collapsed')));
+  setFold(true);
+  markCurrent();
+
+  window.onYouTubeIframeAPIReady=function(){
+    player=new YT.Player('yt',{
+      width:200,height:200,videoId:tracks[cur].id,
+      playerVars:{playsinline:1,rel:0,modestbranding:1,origin:location.origin},
+      events:{
+        onReady:()=>{ready=true; if(pendingPlay) player.playVideo();},
+        onStateChange:e=>{
+          if(e.data===YT.PlayerState.PLAYING) setPlaying(true);
+          else if(e.data===YT.PlayerState.PAUSED||e.data===YT.PlayerState.CUED) setPlaying(false);
+          else if(e.data===YT.PlayerState.ENDED){setPlaying(false); load(cur+1,true);}
+        },
+        onError:e=>{
+          errEl.hidden=false;
+          errEl.textContent='这首暂时无法内嵌播放（错误 '+e.data+'），已跳到下一首。';
+          setTimeout(()=>load(cur+1,true),1200);
+        }
+      }
+    });
+  };
+  const s=document.createElement('script'); s.src='https://www.youtube.com/iframe_api'; document.head.appendChild(s);
+</script>
+</body>
+</html>
